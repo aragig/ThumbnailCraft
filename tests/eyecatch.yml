@@ -1,0 +1,7 @@
+common_yaml: default.yml
+subtext: サブテキストサブテキスト
+text: 記事のタイトル
+icon_path: scrabble.png
+logo_path: logo.png
+stroke_width: 10
+base_path: base.jpg

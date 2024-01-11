@@ -1,0 +1,25 @@
+out_path: eyecatch.jpg
+
+font_path: /Users/mopipico/Library/Fonts/yawarakadragon.otf
+
+bg_color:
+  - 33 # R
+  - 33 # G
+  - 33 # B
+
+font_color:
+  - 255 # R
+  - 255 # G
+  - 255 # B
+
+stroke_color:
+  - 33 # R
+  - 33 # G
+  - 33 # B
+
+stroke_width: 0
+
+logo_scale: 0.8
+icon_scale: 2.0
+
+text_center: True
