@@ -1,6 +1,6 @@
 import os
-from .utils import image_processor
-from .utils import presets
+from .thumbnail_craft_processor import *
+from .thumbnail_craft_presets import *
 
 
 class ThumbnailCraft:
@@ -17,13 +17,13 @@ class ThumbnailCraft:
         self.directory_path = os.path.dirname(main_yaml_path)
 
         common_yaml_dir = os.path.join(self.common_dir, 'yml')
-        self.presets = presets.Presets(main_yaml_path, common_yaml_dir)
+        self.presets = Presets(main_yaml_path, common_yaml_dir)
 
         try:
             self.__overlay_base_img()
         except:
             # プレーン背景を生成
-            self.img = image_processor.Image.new('RGB', (self.CONST_W, self.CONST_H), self.presets.bg_color)
+            self.img = Image.new('RGB', (self.CONST_W, self.CONST_H), self.presets.bg_color)
 
         self.__overlay_icon()
         self.__overlay_text()
@@ -39,36 +39,36 @@ class ThumbnailCraft:
 
     def __overlay_base_img(self):
         base_path = os.path.join(self.directory_path, self.presets.base_path)
-        self.img = image_processor.Image.open(base_path)
+        self.img = Image.open(base_path)
         self.img = self.img.convert('RGB')  # OSError: cannot write mode RGBA as JPEG 対策
-        self.img = image_processor.fill_crop(self.img, (self.CONST_W, self.CONST_H))
+        self.img = fill_crop(self.img, (self.CONST_W, self.CONST_H))
 
     def __overlay_icon(self):
         if self.presets.icon_path is not None:
             p = os.path.join(self.common_dir + '/icons', self.presets.icon_path)
-            self.img = image_processor.overlay_icon(self.img, p, self.presets.icon_scale, self.presets.icon_alpha,
-                                                    self.presets.icon_y)
+            self.img = overlay_icon(self.img, p, self.presets.icon_scale, self.presets.icon_alpha,
+                                    self.presets.icon_y)
 
     def __overlay_text(self):
         if self.presets.text is not None:
             if self.presets.font_size is None:
-                self.presets.font_size = image_processor.fit_font_size(self.presets.text, self.presets.font_path,
-                                                                       self.presets.stroke_width)
+                self.presets.font_size = fit_font_size(self.presets.text, self.presets.font_path,
+                                                       self.presets.stroke_width)
 
-            self.img = image_processor.overlay_text(self.img,
-                                                    self.presets.text,
-                                                    self.presets.font_path,
-                                                    self.presets.font_size,
-                                                    self.presets.font_color,
-                                                    self.presets.stroke_color,
-                                                    self.presets.stroke_width,
-                                                    self.presets.text_y,
-                                                    self.presets.double_stroke,
-                                                    self.presets.text_center,
-                                                    self.presets.subtext,
-                                                    self.presets.subtext_font_path)
+            self.img = overlay_text(self.img,
+                                    self.presets.text,
+                                    self.presets.font_path,
+                                    self.presets.font_size,
+                                    self.presets.font_color,
+                                    self.presets.stroke_color,
+                                    self.presets.stroke_width,
+                                    self.presets.text_y,
+                                    self.presets.double_stroke,
+                                    self.presets.text_center,
+                                    self.presets.subtext,
+                                    self.presets.subtext_font_path)
 
     def __overlay_logo(self):
         if self.presets.logo_path is not None:
             p = os.path.join(self.common_dir + '/logos', self.presets.logo_path)
-            self.img = image_processor.overlay_logo(self.img, p, self.presets.logo_scale)
+            self.img = overlay_logo(self.img, p, self.presets.logo_scale)
